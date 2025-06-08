@@ -16,18 +16,19 @@ public class ExcludeClassPropagator implements TextMapPropagator {
     private static final Logger logger = Logger.getLogger(ExcludeClassPropagator.class.getName());
     private static final TextMapPropagator basePropagator = W3CBaggagePropagator.getInstance();
     private static final ExcludeClassPropagator INSTANCE = new ExcludeClassPropagator();
-    private static final HashSet<String> toExcludeInjection = new HashSet<>();
+    private static final HashSet<String> toExcludeInjection = new HashSet<String>();
+    private static final String excludeInjectionConfigKey =
+            "otel.instrumentation.propagators.tracecontext-exclude.injection";
 
     private ExcludeClassPropagator() {}
 
     /** Singleton instance of the {@link ExcludeClassPropagator}. */
     public static ExcludeClassPropagator getInstance(ConfigProperties configProperties) {
-        List<String> classNames =
-                configProperties.getList(
-                        "otel.instrumentation.propagators.tracecontext-exclude.injection");
+        logger.info("Parsing values from: " + excludeInjectionConfigKey);
+        List<String> classNames = configProperties.getList(excludeInjectionConfigKey);
         if (toExcludeInjection.isEmpty() && !classNames.isEmpty()) {
             toExcludeInjection.addAll(classNames);
-            logger.info("Parsed to be excluded from context injection: " + classNames);
+            logger.info("\tParsed to be excluded from context injection: " + classNames);
         }
         return INSTANCE;
     }
@@ -49,7 +50,7 @@ public class ExcludeClassPropagator implements TextMapPropagator {
         }
         StackTraceElement callerElement = stackTraceElements[stackTraceElements.length - 1];
         logger.fine(
-                "Proceeding with context injection for: "
+                "Injecting context for: "
                         + callerElement.getClassName()
                         + "."
                         + callerElement.getMethodName());
