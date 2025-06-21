@@ -78,7 +78,10 @@ jobs:
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
 
       - name: Use otelbot
-        run: ./.github/scripts/use-otelbot.sh ${{ vars.OTELBOT_GIT_USERNAME }} ${{ vars.OTELBOT_GIT_USEREMAIL }}
+        env:
+          USERNAME: ${{ vars.OTELBOT_GIT_USERNAME }}
+          USEREMAIL: ${{ vars.OTELBOT_GIT_USEREMAIL }}
+        run: ./.github/scripts/use-otelbot.sh $USERNAME $USEREMAIL
 
       - uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
         id: otelbot-token
