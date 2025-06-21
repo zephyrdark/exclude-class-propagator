@@ -52,3 +52,7 @@ This can be used to ensure that outgoing requests/messages do not contain contex
 
 ## Reference
 - https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/examples/extension
+
+
+## To-do
+1. Set up cron github action for updating otelSdk version via auto-update-otel-sdk.yml
