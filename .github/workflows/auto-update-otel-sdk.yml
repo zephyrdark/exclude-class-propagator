@@ -59,7 +59,7 @@ jobs:
       - name: Update version
         env:
           VERSION: ${{ needs.check-versions.outputs.latest-version }}
-        run: ./.github/scripts/update-sdk-version.sh $VERSION
+        run: .github/scripts/update-sdk-version.sh $VERSION
 
       - name: Free disk space
         run: .github/scripts/gha-free-disk-space.sh
@@ -95,7 +95,6 @@ jobs:
 
           git checkout -b $branch
           git add -u
-          git add licenses
           git commit -m "$message"
           git push --set-upstream origin $branch
           gh pr create --title "$message" \
